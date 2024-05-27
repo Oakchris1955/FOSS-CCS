@@ -21,30 +21,8 @@ this script only replaces line to line, hence this won't work with entire paragr
                                                                    os = 0.3
 - perk
 
-
-# 1 FOSS-CCS: Arch linux 
-              - perk = I use Arch, btw
-              - user friendliness = 40%
-              - popularity = S 
-              - type = OS 
-              - hp = 7601 * 10 = 76010
-              - card type = PLATINUM
-              - NTDP = 0
-
-# 2 FOSS-CCS: Neofetch
-              - perk = When used, Arch users have to disclose themselves.
-              - user friendliness = 100%
-              - popularity = S 
-              - type = CLI UTIL
-              - hp = 28400
-              - card type = SILVER
-              - NTDP = 10.2
-
-# 3 FOSS-CCS: rm 
-              - perk =  SPECIAL ATTACT - "-f" Ability to delete, Forcefully. Combined with root privileges, You can delete any card from your opponent.
-              - user friendliness = 85%
-              - popularity = S 
-              - type = COREUTIL
-              - hp = 113840
-              - card type = GOLD
-              - NTDP = 0
+# CONTRIBUTION
+If you want to contribute in any way, which is very welcome. 
+If you want to add a new card, create a PR with all the project files in "project files/FOSS-CCS - <card name>"
+and the main card image as PNG in the root directory named as "FOSS-CCS - <card name>.png"
+And you are all done.

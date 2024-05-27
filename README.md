@@ -48,3 +48,9 @@ Note: this script only replaces line to line, hence this won't work with entire 
               - hp = 113840
               - card type = GOLD
               - NTDP = 0
+
+## CONTRIBUTION
+
+If you want to contribute in any way, which is very welcome, create a PR with all the project files in `project files/FOSS-CCS - <card name>`
+and the main card image as PNG in the root directory named as `FOSS-CCS - <card name>.png`.
+And you are all done.

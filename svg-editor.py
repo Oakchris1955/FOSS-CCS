@@ -27,7 +27,7 @@ def load_svg(filePath):
 
 def interpret_cmd(cmd):
     global DATA
-    cmd = shlex.split(cmd)
+    cmd = shlex.split(cmd) or [""]
 
     match cmd[0].lower():
         case "help" | "?" | "h":
@@ -70,6 +70,9 @@ def interpret_cmd(cmd):
         case "quit" | "q" | "exit":
             print("Quitting..")
             exit()
+
+        case "":
+            pass
 
         case _:
             print(f"Invalid command: \"{cmd[0]}\"\nUse help/h/? to get help")

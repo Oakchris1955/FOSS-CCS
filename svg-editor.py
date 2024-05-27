@@ -1,95 +1,107 @@
-#! /usr/bin/python3
-
-from sys import argv
+#!/usr/bin/env python3
+from sys import argv, exit, version_info
 import os
+import shlex
 
 DATA = ""
 
 def print_help():
-    help = """
-help/?/h    to print help
-            help
-replace     replace first string to the second. Providing first is in the file.
-            replace "string from the file" "replace to this string"
-save        save the file with the given path.
-            save path/to/save
-quit        to quit
-    """
+    help = """\
+help/?/h        Print help.
+                >>> help
+replace         Replace all first string occurences with the second.
+                >>> replace "string in file" "replacement string"
+save            Save file to the given path.
+                >>> save path/to/save
+quit/q/exit     To quit
+                >>> quit"""
     print(help)
-
-
 
 def load_svg(filePath):
     global DATA
-    print(f"Reading file {filePath}")
+    print(f"Reading file {filePath}... ", end="")
     with open(filePath, "r") as f:
         DATA = f.read()
-    print(f"Loaded file {filePath}")
+    print("done")
 
 
 def interpret_cmd(cmd):
     global DATA
-    cmd = cmd.split(" ")
-    if cmd[0] in ["help" , "?", "h"]:
-        print_help()
+    cmd = shlex.split(cmd)
 
-    elif cmd[0] == "data":
-        print(DATA)
+    match cmd[0].lower():
+        case "help" | "?" | "h":
+            print_help()
 
-    elif cmd[0] == "replace":
-        try:
-            t = DATA.split("\n")
-            t = [line.replace(f">{cmd[1]}<", f">{cmd[2]}<") for line in t]
-            DATA = "\n".join(t)
+        case "data":
+            print(DATA)
 
-
-        except IndexError:
-            print("Failed to replace, Proper argument not provided")
-
-    elif cmd[0] == "save":
-        try:
-            filePath = cmd[1]
-        except IndexError:
-            print("Save path not provided")
-
-        if os.path.isfile(filePath):
-            print()
-            choice = input(f"{filePath}: Already exists. Want to continue? [y/n] :").strip().lower()
-            if choice == "y":
-                pass 
-            elif choice == "n":
-                return
-            else:
-                print(f"Invaild choice: {choice}")
+        case "replace":
+            if len(cmd) != 3:
+                print(f"This command takes 2 arguments, {len(cmd) - 1} found")
                 return
 
-        with open(filePath, "w") as f:
-            f.write(DATA)
+            num_of_occurences = DATA.count(cmd[1])
 
-    elif cmd[0] == "quit":
-        print("Quiting..")
-        del DATA
-        exit()
+            DATA = DATA.replace(cmd[1], cmd[2])
 
-    else:
-        print(f"Invaild command: {cmd[0]}\n Use help/h/? to get help")
+            print(f"Replaced {num_of_occurences} occurences")
+
+        case "save":
+            try:
+                filePath = cmd[1]
+            except IndexError:
+                print("Save path not provided")
+                return
+
+            if os.path.isfile(filePath):
+                while True:
+                    choice = input(f"\"{filePath}\" already exists. Want to continue? [y/n]: ").strip().lower()
+                    if choice == "y":
+                        break
+                    elif choice == "n":
+                        return
+                    else:
+                        print(f"Invalid choice: {choice}")
+
+            with open(filePath, "w") as f:
+                f.write(DATA)
+
+        case "quit" | "q" | "exit":
+            print("Quitting..")
+            exit()
+
+        case _:
+            print(f"Invalid command: \"{cmd[0]}\"\nUse help/h/? to get help")
 
 def main():
-    filePath = argv[1]
-    if os.path.isfile(filePath) == False:
-        print(f"Invaild file path: {filePath}")
+    assert version_info >= (3, 10), "Python 3.10 or higher is required to run this program"
+
+    if len(argv) < 2:
+        print("Expected a file path")
         exit(-1)
+
+    filePath = argv[1]
+    if not os.path.isfile(filePath):
+        print(f"Invalid file path: {filePath}")
+        exit(-1)
+
     print(f"File Path: {filePath}")
-    if (filePath[-4::] == ".svg") == False:
-        print(f"Not a svg file: {filePath}")
+    if (filePath[-4::] != ".svg"):
+        print(f"Not a SVG file: {filePath}")
         exit(-1)
 
     load_svg(filePath)
-    print("use ? to get help")
+    print("Use ? to get help")
 
     while True:
-        cmd = input(">>> ")
-        interpret_cmd(cmd)
+        try:
+            cmd = input(">>> ")
+        except EOFError:
+            print()
+            interpret_cmd("quit")
+        else:
+            interpret_cmd(cmd)
 
 if __name__ == "__main__":
     main()

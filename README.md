@@ -23,6 +23,6 @@ this script only replaces line to line, hence this won't work with entire paragr
 
 # CONTRIBUTION
 If you want to contribute in any way, which is very welcome. 
-If you want to add a new card, create a PR with all the project files in "project files/FOSS-CCS - <card name>"
-and the main card image as PNG in the root directory named as "FOSS-CCS - <card name>.png"
+If you want to add a new card, create a PR with all the project files in "project files/FOSS-CCS - \<card name>"
+and the main card image as PNG in the root directory named as "FOSS-CCS - \<card name>.png"
 And you are all done.
